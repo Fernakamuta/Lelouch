@@ -1,0 +1,17 @@
+{
+  "name": "suzaku",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "2captcha": "^2.1.7",
+    "axios": "^0.21.1",
+    "bunyan": "^1.8.15",
+    "@google-cloud/logging-bunyan": "^3.0.2"
+  }
+}
