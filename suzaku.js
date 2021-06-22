@@ -65,6 +65,46 @@ class Suzaku {
     await this.browser.close();
     await this.start();
   }
+  async scrollUp() {
+    console.log("Scrolling up...");
+    return this.page.evaluate(async () => {
+      const scrollableSection = document.querySelector(
+        "#app-mount > div.app-1q1i1E > div > div.layers-3iHuyZ.layers-3q14ss > div > div > div > div.content-98HsJk > div.chat-3bRxxu > div.content-yTz4x3 > main > div.messagesWrapper-1sRNjr.group-spacing-16 > div"
+      );
+      scrollableSection.scrollTop = scrollableSection.offsetHeight;
+    });
+  }
+  async scrollUpSequence(n = 15) {
+    await this.scrollUp();
+    this.scrollCount += 1;
+
+    await setTimeout(async () => {
+      console.log({ scrollCount: this.scrollCount });
+      if (this.scrollCount < n) {
+        return await this.scrollUpSequence(n);
+      } else {
+        return await this.getMessages();
+      }
+    }, 2000);
+  }
+  async getMessages() {
+    this.logger.info("Getting messages...");
+    const msns = await this.page.$$eval(".message-2qnXI6", (messages) =>
+      messages.map((message) => {
+        const title = message.querySelector(".embedTitle-3OXDkz");
+        const links = message.querySelectorAll("a");
+        const date = message.querySelector("time");
+
+        return {
+          ...(title && { title: title.innerText }),
+          ...(date && { date: date.getAttribute("datetime") }),
+          link: Array.from(links).map((link) => link.href),
+        };
+      })
+    );
+    console.log(msns.length);
+    return msns;
+  }
   async getChannelMessages(channel) {
     this.logger.info(`Entering channel ${channel}`);
     const channelUrl = channels[channel];
@@ -72,29 +112,16 @@ class Suzaku {
     await this.page.waitForSelector(".scrollerInner-2YIMLh");
     await this.page.waitForSelector(".embedTitle-3OXDkz");
 
-    this.logger.info("Getting messages...");
-    const msns = await this.page.$$eval(".message-2qnXI6", (messages) =>
-      messages.map((message) => {
-        const title = message.querySelector(".embedTitle-3OXDkz");
-        const link = message.querySelector("a");
-        return {
-          link: link.href,
-          ...(title && { title: title.innerText }),
-        };
-      })
-    );
-    console.log({ msns });
-    //const messages = await this.page.$$eval(".message-2qnXI6 a", (el) => {
-    //return el.href;
-    //});
+    this.scrollCount = 0;
+    const messages = await this.scrollUpSequence();
+    console.log("Ja passo");
+    console.log(messages);
   }
   async start() {
     try {
       await this.startBrowser();
       await this.login();
       await this.getChannelMessages("rtx3070");
-      //await this.enterDataServer();
-      //await this.enterChannel("rtx3060");
     } catch (e) {
       this.logger.error(e);
       await this.restart();
