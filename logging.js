@@ -1,9 +1,6 @@
 const bunyan = require("bunyan"),
   bformat = require("bunyan-format"),
-  formatOut = bformat({ outputMode: "short" }),
-  { LoggingBunyan } = require("@google-cloud/logging-bunyan");
-
-const loggingBunyan = new LoggingBunyan();
+  formatOut = bformat({ outputMode: "short" });
 
 const logger = bunyan.createLogger({
   name: "lelouch",
@@ -12,7 +9,6 @@ const logger = bunyan.createLogger({
       level: "info",
       stream: formatOut,
     },
-    loggingBunyan.stream("info"),
   ],
 });
 

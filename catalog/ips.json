@@ -11,5 +11,9 @@
   "usa3": {
     "proxyIP": "139.180.4.53",
     "proxyPort": "3128"
+  },
+  "brazil1": {
+    "proxyIP": "191.96.73.249",
+    "proxyPort": "3128"
   }
 }

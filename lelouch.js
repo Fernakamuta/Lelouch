@@ -36,7 +36,6 @@ class Lelouch {
 
     this.browser = await puppeteer.launch({
       headless: this.headless,
-      slowMo: 100,
       ...(this.ip && {
         args: [`--proxy-server=${this.ip.proxyIP}:${this.ip.proxyPort}`],
       }),
@@ -50,23 +49,7 @@ class Lelouch {
       "accept-encoding": "gzip, deflate, br",
       "accept-language": "en-US,en;q=0.9",
       "upgrade-insecure-requests": "1",
-      referer: "https://www.google.com/",
-      "sec-fetch-dest": "document",
-      "sec-fetch-mode": "navigate",
-      "sec-fetch-site": "same-origin",
-      "sec-fetch-user": "?1",
     });
-    //if (this.headless) {
-    //await this.page.setRequestInterception(true);
-    //this.page.on("request", (request) => {
-    //if (
-    //request.resourceType() === "image" ||
-    //request.resourceType() === "stylesheet"
-    //)
-    //request.abort();
-    //else request.continue();
-    //});
-    //}
   }
   async verifyCaptcha() {
     try {
@@ -162,7 +145,7 @@ class Lelouch {
     process.env.EMAIL,
     process.env.PASSWORD,
     "3060TI_GIGABYTE",
-    "usa1",
+    "local",
     false
   );
   lelouch.start();
