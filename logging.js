@@ -1,18 +1,16 @@
-const bunyan = require("bunyan");
-const { LoggingBunyan } = require("@google-cloud/logging-bunyan");
+const bunyan = require("bunyan"),
+  bformat = require("bunyan-format"),
+  formatOut = bformat({ outputMode: "short" }),
+  { LoggingBunyan } = require("@google-cloud/logging-bunyan");
 
 const loggingBunyan = new LoggingBunyan();
 
 const logger = bunyan.createLogger({
-  name: "suzaku",
+  name: "lelouch",
   streams: [
     {
       level: "info",
-      stream: process.stdout,
-    },
-    {
-      level: "info",
-      path: "logs/history.log",
+      stream: formatOut,
     },
     loggingBunyan.stream("info"),
   ],

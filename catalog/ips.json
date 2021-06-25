@@ -1,0 +1,15 @@
+{
+  "local": null,
+  "usa1": {
+    "proxyIP": "138.229.100.45",
+    "proxyPort": "3128"
+  },
+  "usa2": {
+    "proxyIP": "107.172.95.180",
+    "proxyPort": "3128"
+  },
+  "usa3": {
+    "proxyIP": "139.180.4.53",
+    "proxyPort": "3128"
+  }
+}
